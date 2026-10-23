@@ -1,0 +1,24 @@
+[
+  {
+    "username": "admin",
+    "passwordHash": "31550cf587e28ede7ceec353b8a183f2:becdda3be83ed76f557276ca96775d66349e6bf0b9d04dd1729963207b8171ec3d429acb042f38c7c6f93f5c6495c50396dbaf1057331597a55e6b5b0f5d55a7",
+    "role": "admin",
+    "createdAt": "2026-10-21T18:50:21.932Z",
+    "preferences": {
+      "empresa": "Administração",
+      "moeda": "BRL",
+      "tema": "claro"
+    }
+  },
+  {
+    "username": "adriano",
+    "passwordHash": "88d723eb8289839adcb4f07c521bfac7:68e4cf9a5716614ed685c78d2771ddd4ab12f7a8ac9b09e5a300f60859666a0394f1b91aebfc7ea78c3d3f0c024392c4adeb9d94d9ef32d924e94d3cf5e028b4",
+    "role": "user",
+    "preferences": {
+      "empresa": "JLRM Gestão Empresarial Profissional",
+      "moeda": "BRL",
+      "tema": "claro"
+    },
+    "createdAt": "2026-10-21T19:48:49.690Z"
+  }
+]

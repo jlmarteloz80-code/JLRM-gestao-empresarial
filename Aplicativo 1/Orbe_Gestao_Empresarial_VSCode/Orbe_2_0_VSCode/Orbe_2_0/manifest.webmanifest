@@ -1,0 +1,20 @@
+{
+  "id": "/",
+  "name": "JLRM Gestão Empresarial",
+  "short_name": "JLRM Gestão",
+  "description": "Aplicativo de gestão empresarial JLRM",
+  "lang": "pt-BR",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f3f5fa",
+  "theme_color": "#111827",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

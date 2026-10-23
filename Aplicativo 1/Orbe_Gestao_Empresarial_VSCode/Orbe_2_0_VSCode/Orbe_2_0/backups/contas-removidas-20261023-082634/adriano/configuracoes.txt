@@ -1,0 +1,7 @@
+{
+    "empresa":  "GestÃ£o Empresarial Profissional",
+    "moeda":  "BRL",
+    "tema":  "claro",
+    "versao":  "2.1",
+    "saldoInicialCaixa":  0
+}

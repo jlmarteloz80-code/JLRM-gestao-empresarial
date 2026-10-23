@@ -1,0 +1,8 @@
+services:
+  - type: web
+    name: orbe-gestao
+    runtime: node
+    plan: free
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /

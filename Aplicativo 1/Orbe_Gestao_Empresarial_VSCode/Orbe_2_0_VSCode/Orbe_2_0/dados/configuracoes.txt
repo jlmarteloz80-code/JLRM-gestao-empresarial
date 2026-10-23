@@ -1,0 +1,7 @@
+{
+  "empresa": "iw",
+  "moeda": "BRL",
+  "tema": "escuro",
+  "versao": "2.0",
+  "observacao": "Dados provisórios para testes. Faça backups regulares."
+}

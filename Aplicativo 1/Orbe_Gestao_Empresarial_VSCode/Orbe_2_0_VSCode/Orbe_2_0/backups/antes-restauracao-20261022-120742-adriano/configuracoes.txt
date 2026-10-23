@@ -1,0 +1,6 @@
+{
+  "empresa": "JLRM Gestão Empresarial Profissional",
+  "moeda": "BRL",
+  "tema": "claro",
+  "versao": "2.1"
+}

@@ -1,0 +1,74 @@
+# Orbe 2.0 — projeto para VS Code
+
+## Arquivos
+- `index.html`: interface do sistema.
+- `server.js`: servidor Node.js; grava os dados em arquivos TXT no servidor.
+- `auth.js`: tela de login e gerenciamento de acesso.
+- `manifest.webmanifest`, `sw.js`, `icon.svg`: recursos para instalação como app web (PWA).
+- `dados/*.txt`: arquivos de dados (conteúdo JSON válido dentro de arquivos `.txt`).
+- `dados/logins.txt`: contas de acesso; as senhas ficam protegidas por hash.
+- `backups/`: pasta reservada para cópias de segurança.
+
+## Como abrir no VS Code (Windows)
+1. Extraia a pasta do ZIP para um local fácil, por exemplo `C:\Projetos\Orbe_2_0`.
+2. Abra o VS Code e escolha **Arquivo > Abrir Pasta...** e selecione `Orbe_2_0`.
+3. Instale o Node.js se ainda não estiver instalado: https://nodejs.org/
+4. No VS Code, abra **Terminal > Novo Terminal**.
+5. Execute `node server.js`.
+6. No navegador, acesse `http://localhost:3000`.
+7. Entre com a conta de administrador e use **Logins de acesso** para criar, redefinir senha ou excluir contas de usuários.
+
+Ao excluir um login de usuário, o sistema revoga as sessões abertas e apaga permanentemente os dados empresariais daquela conta. A conta principal de administrador não pode ser excluída.
+
+Se já houver uma versão antiga do servidor rodando na porta 3000, pare-a com `Ctrl+C` no terminal antigo e execute `node server.js` novamente nesta pasta. O servidor antigo precisa ser reiniciado para carregar as rotas de login.
+
+Não abra o `index.html` com duplo clique para o modo TXT. Abra pelo endereço `http://localhost:3000`, pois o servidor é o responsável por gravar os arquivos em `dados/`.
+
+## Usar no celular
+1. Conecte o computador e o celular à mesma rede Wi-Fi privada.
+2. Inicie `node server.js` no computador. O terminal mostra um endereço de rede, por exemplo `http://192.168.0.10:3000`.
+3. No celular, abra esse endereço no navegador e entre com um login criado pelo administrador.
+4. Se não conectar, permita o Node.js na rede privada pelo Firewall do Windows e confirme que os dois dispositivos estão na mesma rede.
+
+O layout é responsivo para celular e tablet. O acesso por Wi-Fi local usa HTTP e serve para testes em rede confiável; não encaminhe a porta do roteador nem use uma rede pública. A instalação como ícone/app PWA requer HTTPS no endereço do servidor (ou `localhost`); para instalar nos celulares pela rede, será necessário publicar com HTTPS. O service worker não armazena nem disponibiliza dados financeiros offline.
+
+## Personalização e separação por login
+Cada conta pode configurar seu próprio nome de empresa, moeda e tema em **Configurações e backup**. As preferências ficam em `dados/logins.txt`. O nome aparece no aplicativo e no manifesto PWA da conta. No rodapé permanece **Desenvolvido por JLRM**.
+
+Os dados empresariais são separados por login e ficam em `dados/usuarios/<usuario>/`. Usuários, lançamentos, contas, clientes, funcionários, gestores, produtos, metas, investimentos e configurações são gravados em arquivos `.txt` com conteúdo JSON. Somente uma sessão de administrador pode criar, redefinir ou excluir logins.
+
+## Publicação no Render grátis
+O GitHub guarda o código; o servidor Node fica hospedado no Render. O `render.yaml` configura o plano gratuito, e o servidor grava os arquivos TXT na pasta `dados/` do serviço.
+
+1. Antes de publicar, entre como administrador e baixe o backup de todos em **Logins de acesso > Backup completo do sistema**; guarde o arquivo fora do Render. Não envie dados ou senhas para o GitHub: `.gitignore` exclui `dados/`, `backups/`, `.env` e `node_modules/`.
+2. Crie um repositório GitHub **privado** e envie o código da pasta do aplicativo para a raiz do repositório.
+3. No Render, escolha **New > Blueprint** e conecte o repositório. O blueprint cria um serviço `free`. Se o serviço já existia, sincronize/aplique as alterações do Blueprint e remova as variáveis antigas `DATA_DIR` e `ADMIN_INITIAL_PASSWORD`, se estiverem definidas.
+4. Em uma instalação sem usuários salvos, entre com `admin` e senha `admin`; essa senha não aparece nos logs. Se já existir um arquivo de logins, as contas e senhas existentes são mantidas. Para levar os dados existentes, restaure o backup completo pelo sistema após entrar.
+5. Teste criar um registro, atualizar a página e reiniciar o serviço. Confirme que os dados continuam presentes.
+
+**Importante:** o plano gratuito do Render não oferece armazenamento persistente. Os arquivos em `dados/` podem ser apagados em reinícios, suspensão ou novos deploys; manter o serviço ativo não garante que eles serão preservados. Baixe regularmente o backup completo e guarde-o fora do Render para poder restaurar os dados.
+
+Se ao salvar aparecer um erro com código entre parênteses, consulte **Render > Logs** no mesmo horário: o log `Erro ao salvar dados/...` mostra o motivo técnico. Dados já apagados por reinício/deploy do plano gratuito só podem ser recuperados de um backup baixado anteriormente.
+
+Na tela **Início — Resumo geral**, use o seletor **Ver mês** para consultar as entradas, despesas e o lucro registrado em qualquer mês.
+
+## Transformar em app
+Depois de testar nos celulares, podemos empacotar essa versão web como aplicativo Android/iOS ou evoluir para um app nativo. Primeiro é necessário decidir onde o servidor e os dados ficarão hospedados; o servidor local do computador precisa estar ligado para os celulares acessarem os dados.
+
+## Sobre os arquivos TXT
+O sistema mantém dados em arquivos `.txt` com conteúdo JSON. `dados/logins.txt` armazena os usuários e hashes das senhas, nunca as senhas em texto legível. Em **Logins de acesso**, o administrador pode redefinir senhas.
+
+## Backups
+Em **Configurações e backup**, cada usuário pode baixar o backup da própria conta. Para salvar o sistema inteiro, entre como administrador, abra **Logins de acesso** e use **Backup completo do sistema > Baixar backup de todos**. Esse arquivo inclui todos os logins e dados de todas as contas. Ele também contém hashes das senhas: guarde-o em local seguro.
+
+Para recuperar o sistema, entre como administrador, abra **Logins de acesso**, clique em **Enviar JSON e recarregar todos os dados** e selecione o arquivo de backup completo. A restauração substitui todos os logins e dados atuais pelos do backup e encerra as sessões; depois, entre novamente usando as credenciais que existiam na data do backup. Faça um backup atual antes de restaurar, pois a substituição não pode ser desfeita pela interface.
+
+Em **Logins de acesso**, o administrador também pode escolher uma pasta no computador para os backups automáticos. A cada cinco minutos, o navegador cria um novo arquivo `orbe_backup_completo_DATA_HORA.json` e atualiza também `orbe_backup_completo_automatico.json` com a cópia mais recente. As cópias com data e hora são mantidas sem limite e não são apagadas automaticamente. Essa opção exige Chrome ou Edge em um computador, a página aberta, a sessão administrativa ativa e a permissão para a pasta concedida. Se fechar o navegador, desligar o computador ou perder a sessão, a cópia automática para até abrir o sistema novamente. Como os arquivos são gravados no computador, eles não desaparecem quando o Render reinicia.
+
+Para evitar substituir uma cópia completa por outra incompleta após um reinício do Render, a atualização automática compara as contas e a quantidade de registros de cada categoria com o arquivo local existente. Se o servidor apresentar menos contas ou dados, nenhum backup novo é gravado; as cópias anteriores são preservadas. Escolha uma cópia datada e use **Enviar JSON e recarregar todos os dados** para restaurá-la. A cópia automática não restaura dados no Render por conta própria. Como as cópias datadas são mantidas sem limite, organize ou copie a pasta periodicamente para evitar falta de espaço.
+
+## Observações
+- A senha inicial `admin` / `admin` é conhecida e insegura para um site público. Altere-a após o primeiro acesso para impedir que outras pessoas tentem essa combinação. Em hospedagem pública, use HTTPS e mantenha os backups em local seguro.
+- Use o app pelo servidor Node em `http://localhost:3000`; não abra o `index.html` diretamente.
+- O assistente é baseado em regras locais e não usa uma IA online.
+- Não há upload de anexos implementado nesta versão.
